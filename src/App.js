@@ -8,7 +8,7 @@ import { attachTree } from "./d3-shit"
 import path from "path"
 
 class App extends React.Component {
-  treeId = "tree"
+  treeId = "tree-container"
 
   getFolder = (event) => {
     // var files = e.target.files;
@@ -24,13 +24,18 @@ class App extends React.Component {
 
     console.log(finalFiles)
 
-    attachTree(this.treeId)
+    // attachTree()
+  }
+
+  onClick = () => {
+    attachTree()
   }
 
   render() {
     return (
       <div>
-        <input type="file" id="flup" onChange={this.getFolder} webkitdirectory="" mozdirectory="" msdirectory="" odirectory="" directory="" multiple />
+        {/* <input type="file" id="flup" onChange={this.getFolder} webkitdirectory="" mozdirectory="" msdirectory="" odirectory="" directory="" multiple /> */}
+        <button onClick={this.onClick}>click</button>
 
         <div id={this.treeId} />
       </div>

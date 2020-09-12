@@ -911,7 +911,7 @@ export const attachTree = () => {
 
 
   // Define the drag listeners for drag/drop behaviour of nodes.
-  dragListener = d3.behavior.drag()
+  var dragListener = d3.behavior.drag()
       .on("dragstart", function(d) {
           if (d == root) {
               return;
@@ -1060,9 +1060,9 @@ export const attachTree = () => {
   // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
 
   function centerNode(source) {
-      scale = zoomListener.scale();
-      x = -source.y0;
-      y = -source.x0;
+      var scale = zoomListener.scale();
+      var x = -source.y0;
+      var y = -source.x0;
       x = x * scale + viewerWidth / 2;
       y = y * scale + viewerHeight / 2;
       d3.select('g').transition()
@@ -1127,7 +1127,7 @@ export const attachTree = () => {
       });
 
       // Update the nodes…
-      node = svgGroup.selectAll("g.node")
+      var node = svgGroup.selectAll("g.node")
           .data(nodes, function(d) {
               return d.id || (d.id = ++i);
           });

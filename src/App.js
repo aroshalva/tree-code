@@ -1,10 +1,9 @@
 import React from 'react';
 import 'highlight.js/styles/dracula.css';
 import 'react-tree-graph/dist/style.css'
-import HighlightBasics from  './HighlightBasics';
-import Tree from  'react-tree-graph';
 import './App.css';
 import { attachTree } from "./d3-shit"
+import { dummyData } from "./dummy-data"
 import path from "path"
 
 const buildTree = (fields, splitBy) => {
@@ -36,29 +35,31 @@ const buildTree = (fields, splitBy) => {
   return tree;
 }
 
+const transformEventToData  = event => {
+  let files = event.target.files
+
+  const finalFiles = []
+
+  for (let i=0; i<files.length; i++) {
+    finalFiles.push(files[i].webkitRelativePath)
+  };
+
+  return buildTree(finalFiles, path.sep)
+}
+
+setTimeout(() => { attachTree(dummyData) }, 10)
+
 class App extends React.Component {
   treeId = "tree-container"
 
   getFolder = (event) => {
-    const finalFiles = []
-    let files = event.target.files
-    for (let i=0; i<files.length; i++) {
-      finalFiles.push(files[i].webkitRelativePath)
-    };
-
-    console.log(finalFiles)
-
-    attachTree(buildTree(finalFiles, path.sep))
-  }
-
-  onClick = () => {
-    attachTree()
+    attachTree(transformEventToData(event))
   }
 
   render() {
     return (
       <div>
-        <input type="file" id="flup" onChange={this.getFolder} webkitdirectory="" mozdirectory="" msdirectory="" odirectory="" directory="" multiple />
+        {/* <input type="file" id="flup" onChange={this.getFolder} webkitdirectory="" mozdirectory="" msdirectory="" odirectory="" directory="" multiple /> */}
 
         <div id={this.treeId} />
       </div>

@@ -7,15 +7,39 @@ import './App.css';
 import { attachTree } from "./d3-shit"
 import path from "path"
 
+const buildTree = (fields, splitBy) => {
+  var root;
+  let tree = {
+    "name": "Shako-root",
+    "children": []
+  }
+
+  const addNodes = (tag) => {
+    for (let i = 0; i < root.children.length; i++) {
+      if (tag === root.children[i].name) {
+        root = root.children[i];
+        return;
+      }
+    }
+    root.children.push({
+      'name': tag,
+      children: []
+    })
+    root = root.children[root.children.length-1]
+  }
+
+  fields.forEach((field) => {
+    var tags = field.split(splitBy);
+    root = tree;
+    tags.forEach(addNodes)
+  })
+  return tree;
+}
+
 class App extends React.Component {
   treeId = "tree-container"
 
   getFolder = (event) => {
-    // var files = e.target.files;
-    // var path = files[0].webkitRelativePath;
-    // var Folder = path.split("/");
-    // alert(Folder[0]);
-
     const finalFiles = []
     let files = event.target.files
     for (let i=0; i<files.length; i++) {
@@ -24,7 +48,7 @@ class App extends React.Component {
 
     console.log(finalFiles)
 
-    // attachTree()
+    attachTree(buildTree(finalFiles, path.sep))
   }
 
   onClick = () => {
@@ -34,8 +58,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        {/* <input type="file" id="flup" onChange={this.getFolder} webkitdirectory="" mozdirectory="" msdirectory="" odirectory="" directory="" multiple /> */}
-        <button onClick={this.onClick}>click</button>
+        <input type="file" id="flup" onChange={this.getFolder} webkitdirectory="" mozdirectory="" msdirectory="" odirectory="" directory="" multiple />
 
         <div id={this.treeId} />
       </div>
@@ -44,17 +67,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-
-/*
-<script type="text/javascript">
-  function getfolder(e) {
-    var files = e.target.files;
-    var path = files[0].webkitRelativePath;
-    var Folder = path.split("/");
-    alert(Folder[0]);
-  }
-</script>
-
-<input type="file" id="flup" onchange="getfolder(event)" webkitdirectory mozdirectory msdirectory odirectory directory multiple />
-*/

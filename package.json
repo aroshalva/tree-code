@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "file-system": "^2.2.2",
+    "folder-reader": "^2.0.0",
+    "folder-walker": "^3.2.0",
     "fs": "^0.0.1-security",
     "fs-extra": "^8.1.0",
     "highlight.js": "^9.16.2",

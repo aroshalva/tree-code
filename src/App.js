@@ -4,21 +4,35 @@ import 'react-tree-graph/dist/style.css'
 import HighlightBasics from  './HighlightBasics';
 import Tree from  'react-tree-graph';
 import './App.css';
+import { attachTree } from "./d3-shit"
+import path from "path"
 
 class App extends React.Component {
-  getFolder(e) {
-    console.log(99, e)
+  treeId = "tree"
 
-    var files = e.target.files;
-    var path = files[0].webkitRelativePath;
-    var Folder = path.split("/");
-    alert(Folder[0]);
+  getFolder = (event) => {
+    // var files = e.target.files;
+    // var path = files[0].webkitRelativePath;
+    // var Folder = path.split("/");
+    // alert(Folder[0]);
+
+    const finalFiles = []
+    let files = event.target.files
+    for (let i=0; i<files.length; i++) {
+      finalFiles.push(files[i].webkitRelativePath)
+    };
+
+    console.log(finalFiles)
+
+    attachTree(this.treeId)
   }
 
   render() {
     return (
       <div>
-        <input type="file" id="flup" onChange={this.getFolder} webkitdirectory mozdirectory msdirectory odirectory directory multiple />
+        <input type="file" id="flup" onChange={this.getFolder} webkitdirectory="" mozdirectory="" msdirectory="" odirectory="" directory="" multiple />
+
+        <div id={this.treeId} />
       </div>
     );
   }

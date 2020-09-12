@@ -7,7 +7,8 @@
 }
 
 .node circle {
-  fill: #fff;
+  /* fill: #fff; */
+  fill: #ffa333;
   stroke: steelblue;
   stroke-width: 1.5px;
 }

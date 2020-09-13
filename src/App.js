@@ -90,7 +90,6 @@ class App extends React.Component {
   }
 
   getFolder = (event) => {
-    // eslint-disable-next-line
     document.getElementById(attachId).innerHTML = ""
 
     attachTree(

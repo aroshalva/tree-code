@@ -21,7 +21,7 @@ const folderColors = [
     "#52BE80",
 ]
 
-export const attachTree = (treeData) => {
+export const attachTree = ({ treeData, onNodeClick, viewerWidth, viewerHeight }) => {
 
   // Calculate total nodes, max label length
   var totalNodes = 0;
@@ -36,10 +36,6 @@ export const attachTree = (treeData) => {
   var i = 0;
   var duration = 250;
   var root;
-
-  // size of the diagram
-  var viewerWidth = $(document).width();
-  var viewerHeight = $(document).height();
 
   var tree = d3.layout.tree()
       .size([viewerHeight, viewerWidth]);
@@ -161,6 +157,8 @@ function diagonal(d) {
       d = toggleChildren(d);
       update(d);
       centerNode(d);
+
+      onNodeClick(d)
   }
 
   function update(source) {

@@ -40,3 +40,32 @@
 foreignObject.fileIcon::before {
   font-size: 35px;
 }
+
+/* start of something */
+
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+}
+#root {
+  height: 100%;
+}
+.app {
+  height: 100%;
+}
+
+.content-container {
+  height: calc(100% - 21px);
+  display: flex;
+}
+.content-container .highlightjs-shit {
+  max-width: 450px;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+.content-container .highlightjs-shit pre {
+  margin: 0;
+}

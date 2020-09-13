@@ -12,12 +12,16 @@ class HighlightBasics extends React.Component {
   }
 
   onClickProcess = () => {
+    // to refresh element, remove from rendering, so that stupid highlightjs work properly on redraw
+    this.setState({ fileText: "" })
+
     const reader = new FileReader()
 
     reader.onload = () => {
       this.setState({ fileText: reader.result })
 
-      hljs.initHighlighting()
+      var blocks = document.querySelectorAll('pre code');
+      Array.prototype.forEach.call(blocks, hljs.highlightBlock);
     }
 
     reader.readAsText(this.fileInput.current.files[0])
@@ -26,7 +30,9 @@ class HighlightBasics extends React.Component {
   render() {
     return (
       <div>
-        <pre><code>{this.state.fileText}</code></pre>
+        {this.state.fileText &&
+          <pre><code>{this.state.fileText}</code></pre>
+        }
 
         <input type="file" ref={this.fileInput} />
 

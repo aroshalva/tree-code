@@ -439,10 +439,10 @@ function diagonal(d) {
         .attr("width", 0)
         .attr("height", 0)
 
+      const textX = d => d.children || d._children ? 10 : rectNode.height + 5;
+
       nodeEnter.append("text")
-          .attr("x", function(d) {
-              return d.children ? 10 : rectNode.height + 5;
-          })
+          .attr("x", textX)
           .attr("y", function(d) {
             return 15;
             })
@@ -455,7 +455,7 @@ function diagonal(d) {
               return d.name;
           })
           .style("fill-opacity", 0)
-          .style("font-size", 15)
+          .style("font-size", 25)
           .style("font-weight", "bold")
           .style("fill", function(d) {
             return d.children ? "white" : "black";
@@ -477,9 +477,7 @@ function diagonal(d) {
 
       // Update the text to reflect whether node has children or not.
       node.select('text')
-          .attr("x", function(d) {
-              return d.children ? 10 : rectNode.height + 5;;
-          })
+          .attr("x", textX)
           .attr("y", function(d) {
               return 15;
           })

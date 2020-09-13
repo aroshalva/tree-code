@@ -77,7 +77,7 @@ const sortAsFoldersOnTop = (data) => {
 class App extends React.Component {
   treeId = "tree-container"
 
-  dummyTreeShow = true
+  // dummyTreeShow = true
 
   componentDidMount () {
     if (this.dummyTreeShow) {

@@ -1,4 +1,5 @@
 // http://bl.ocks.org/robschmuecker/7880033
+import aa, { getClassWithColor } from 'file-icons-js'
 
 import React from 'react';
 import 'highlight.js/styles/dracula.css';
@@ -7,6 +8,7 @@ import './App.css';
 import { attachTree } from "./d3-shit"
 import { dummyData } from "./dummy-data"
 import path from "path"
+import 'file-icons-js/css/style.css'
 
 const buildTree = (fields, splitBy) => {
   var root;
@@ -49,10 +51,17 @@ const transformEventToData  = event => {
   return buildTree(finalFiles, path.sep)
 }
 
-setTimeout(() => { attachTree(dummyData) }, 10)
 
 class App extends React.Component {
   treeId = "tree-container"
+
+  dummyTreeShow = true
+
+  componentDidMount () {
+    if (this.dummyTreeShow) {
+      setTimeout(() => { attachTree(dummyData) }, 10)
+    }
+  }
 
   getFolder = (event) => {
     attachTree(transformEventToData(event))
@@ -61,7 +70,10 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        {/* <input type="file" id="flup" onChange={this.getFolder} webkitdirectory="" mozdirectory="" msdirectory="" odirectory="" directory="" multiple /> */}
+        {!this.dummyTreeShow &&
+          <input type="file" id="flup" onChange={this.getFolder} webkitdirectory="" mozdirectory="" msdirectory="" odirectory="" directory="" multiple />
+        }
+        <div class={getClassWithColor.bind(aa)("nana.js")}></div>
 
         <div id={this.treeId} />
       </div>

@@ -14,10 +14,10 @@ import 'file-icons-js/css/style.css'
 
 const folderColors = [
     "#B03A2E",
-    "#7D3C98",
+    "#A569BD",
     "#2874A6",
     "#D68910",
-    "#186A3B",
+    "#52BE80",
 ]
 
 export const attachTree = (treeData) => {

@@ -25,7 +25,7 @@ export const attachTree = (treeData) => {
   var panBoundary = 20; // Within 20px from edges will pan when dragging.
   // Misc. variables
   var i = 0;
-  var duration = 750;
+  var duration = 250;
   var root;
 
   // size of the diagram
@@ -40,7 +40,9 @@ export const attachTree = (treeData) => {
 //       .projection(function(d) {
 //           return [d.y, d.x];
 //       });
-var rectNode = { width : 150, height : 35 }
+var rectNode = { width : 250, height : 35 }
+
+var nodeRoundCorners = 5
 
 function diagonal(d) {
     var p0 = {
@@ -422,9 +424,13 @@ function diagonal(d) {
           // .attr("r", 0)
           .attr("width", 0)
           .attr("height", 0)
+          .attr("rx", nodeRoundCorners)								// how much to round corners - to be transitioned below
+		  .attr("ry", nodeRoundCorners)
           .style("fill", function(d) {
               return d._children ? "black" : "white";
-          });
+          })
+          .style("stroke", "grey")
+          .style("stroke-width", 1);
 
       nodeEnter.append("foreignObject")
         .attr('class', (d, b) => {
@@ -495,6 +501,10 @@ function diagonal(d) {
           .attr("width", rectNode.width)
           .attr("height", rectNode.height)
           .style("fill", function(d) {
+            if (d._children) {
+                return "black"
+            }
+
             if (!d.children) {
                 return "white"
             }

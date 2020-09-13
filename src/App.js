@@ -1,5 +1,4 @@
 // http://bl.ocks.org/robschmuecker/7880033
-import fileIconsJs, { getClassWithColor } from 'file-icons-js'
 
 import React from 'react';
 import 'highlight.js/styles/dracula.css';
@@ -8,7 +7,6 @@ import './App.css';
 import { attachTree } from "./d3-shit"
 import { dummyData } from "./dummy-data"
 import path from "path"
-import 'file-icons-js/css/style.css'
 
 const buildTree = (fields, splitBy) => {
   var root;
@@ -42,8 +40,6 @@ const buildTree = (fields, splitBy) => {
 const transformEventToData  = event => {
   let files = event.target.files
 
-  console.log(11, files)
-
   const finalFiles = []
 
   for (let i=0; i<files.length; i++) {
@@ -75,7 +71,6 @@ class App extends React.Component {
         {!this.dummyTreeShow &&
           <input type="file" id="flup" onChange={this.getFolder} webkitdirectory="" mozdirectory="" msdirectory="" odirectory="" directory="" multiple />
         }
-        <div class={getClassWithColor.bind(fileIconsJs)("nana.js")}></div>
 
         <div id={this.treeId} />
       </div>

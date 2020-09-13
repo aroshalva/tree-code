@@ -435,7 +435,7 @@ function diagonal(d) {
 
       nodeEnter.append("text")
           .attr("x", function(d) {
-              return d.children || d._children ? 10 : 10;
+              return d.children ? 10 : rectNode.height + 5;
           })
           .attr("y", function(d) {
             return 15;
@@ -443,7 +443,7 @@ function diagonal(d) {
           .attr("dy", ".35em")
           .attr('class', 'nodeText')
           .attr("text-anchor", function(d) {
-              return d.children || d._children ? "start" : "start";
+              return "start";
           })
           .text(function(d) {
               return d.name;
@@ -451,7 +451,9 @@ function diagonal(d) {
           .style("fill-opacity", 0)
           .style("font-size", 15)
           .style("font-weight", "bold")
-          .style("fill", "white");
+          .style("fill", function(d) {
+            return d.children ? "white" : "black";
+        });
 
       // // phantom node to give us mouseover in a radius around it
       // nodeEnter.append("circle")
@@ -470,13 +472,13 @@ function diagonal(d) {
       // Update the text to reflect whether node has children or not.
       node.select('text')
           .attr("x", function(d) {
-              return d.children || d._children ? 10 : 10;
+              return d.children ? 10 : rectNode.height + 5;;
           })
           .attr("y", function(d) {
               return 15;
           })
           .attr("text-anchor", function(d) {
-              return d.children || d._children ? "start" : "start";
+              return "start";
           })
           .text(function(d) {
               return d.name;

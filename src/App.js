@@ -49,6 +49,30 @@ const transformEventToData  = event => {
   return buildTree(finalFiles, path.sep)
 }
 
+const sortAsFoldersOnTop = (data) => {
+  const sortArr = (arr) => {
+    arr.sort((a, b) => b.name.toLowerCase() < a.name.toLowerCase() ? 1 : -1)
+
+    arr.sort((a, b) => {
+      if (a.children.length === 0 && b.children.length === 0) return 0
+      if (a.children.length > 0 && b.children.length > 0) return 0
+
+      return a.children.length > 0 ? -1 : 1
+    })
+  }
+
+  const sortRecursive = (recData) => {
+    if (recData.children) {
+      sortArr(recData.children)
+
+      recData.children.forEach((currChild) => { sortRecursive(currChild) })
+    }
+  }
+
+  sortRecursive(data)
+
+  return data
+}
 
 class App extends React.Component {
   treeId = "tree-container"
@@ -57,12 +81,20 @@ class App extends React.Component {
 
   componentDidMount () {
     if (this.dummyTreeShow) {
-      setTimeout(() => { attachTree(dummyData) }, 10)
+      setTimeout(() => {
+        attachTree(
+          sortAsFoldersOnTop(dummyData)
+        )
+      }, 10)
     }
   }
 
   getFolder = (event) => {
-    attachTree(transformEventToData(event))
+    attachTree(
+      sortAsFoldersOnTop(
+        transformEventToData(event)
+      )
+    )
   }
 
   render() {

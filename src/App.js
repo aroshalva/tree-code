@@ -137,21 +137,21 @@ class App extends React.Component {
   }
 
   onNodeClick = (d) => {
-    console.log(111, d)
+    if (!d.children && !d._children) {
+      // to refresh element, remove from rendering, so that stupid highlightjs work properly on redraw
+      this.setState({ fileText: "" })
 
-    // to refresh element, remove from rendering, so that stupid highlightjs work properly on redraw
-    this.setState({ fileText: "" })
+      const reader = new FileReader()
 
-    const reader = new FileReader()
+      reader.onload = () => {
+        this.setState({ fileText: reader.result })
 
-    reader.onload = () => {
-      this.setState({ fileText: reader.result })
+        var blocks = document.querySelectorAll('pre code');
+        Array.prototype.forEach.call(blocks, hljs.highlightBlock);
+      }
 
-      var blocks = document.querySelectorAll('pre code');
-      Array.prototype.forEach.call(blocks, hljs.highlightBlock);
+      reader.readAsText(this.state.files[d.indexInFiles])
     }
-
-    reader.readAsText(this.state.files[d.indexInFiles])
   }
 
   render() {

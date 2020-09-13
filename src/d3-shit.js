@@ -156,7 +156,10 @@ function diagonal(d) {
       if (d3.event.defaultPrevented) return; // click suppressed
       d = toggleChildren(d);
       update(d);
-      centerNode(d);
+
+      if (d.children || d._children) {
+          centerNode(d);
+      }
 
       onNodeClick(d)
   }

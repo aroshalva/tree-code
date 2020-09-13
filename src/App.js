@@ -1,4 +1,5 @@
 // http://bl.ocks.org/robschmuecker/7880033
+// https://tree-code-4e0b9.web.app/
 
 import React from 'react';
 import 'highlight.js/styles/dracula.css';
@@ -6,6 +7,7 @@ import 'react-tree-graph/dist/style.css'
 import './App.css';
 import { attachTree } from "./d3-shit"
 import { dummyData } from "./dummy-data"
+import { attachId } from "./constants"
 import path from "path"
 
 const buildTree = (fields, splitBy) => {
@@ -75,9 +77,7 @@ const sortAsFoldersOnTop = (data) => {
 }
 
 class App extends React.Component {
-  treeId = "tree-container"
-
-  dummyTreeShow = true
+  // dummyTreeShow = true
 
   componentDidMount () {
     if (this.dummyTreeShow) {
@@ -90,6 +90,9 @@ class App extends React.Component {
   }
 
   getFolder = (event) => {
+    // eslint-disable-next-line
+    document.getElementById(attachId).innerHTML = ""
+
     attachTree(
       sortAsFoldersOnTop(
         transformEventToData(event)
@@ -104,7 +107,7 @@ class App extends React.Component {
           <input type="file" id="flup" onChange={this.getFolder} webkitdirectory="" mozdirectory="" msdirectory="" odirectory="" directory="" multiple />
         }
 
-        <div id={this.treeId} />
+        <div id={attachId} />
       </div>
     );
   }

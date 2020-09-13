@@ -1,5 +1,6 @@
 /* eslint-disable */
 import fileIconsJs, { getClassWithColor } from 'file-icons-js'
+import { attachId } from "./constants"
 import path from "path"
 import 'file-icons-js/css/style.css'
 
@@ -119,7 +120,7 @@ function diagonal(d) {
   var zoomListener = d3.behavior.zoom().scaleExtent([0.01, 3]).on("zoom", zoom);
 
   // define the baseSvg, attaching a class for styling and the zoomListener
-  var baseSvg = d3.select("#tree-container").append("svg")
+  var baseSvg = d3.select(`#${attachId}`).append("svg")
       .attr("width", viewerWidth)
       .attr("height", viewerHeight)
       .attr("class", "overlay")

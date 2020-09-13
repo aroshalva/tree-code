@@ -1,5 +1,6 @@
 /* eslint-disable */
-import aa, { getClassWithColor } from 'file-icons-js'
+import fileIconsJs, { getClassWithColor } from 'file-icons-js'
+import path from "path"
 import 'file-icons-js/css/style.css'
 
 
@@ -39,7 +40,7 @@ export const attachTree = (treeData) => {
 //       .projection(function(d) {
 //           return [d.y, d.x];
 //       });
-var rectNode = { width : 120, height : 35 }
+var rectNode = { width : 150, height : 35 }
 
 function diagonal(d) {
     var p0 = {
@@ -425,14 +426,12 @@ function diagonal(d) {
               return d._children ? "black" : "white";
           });
 
-      nodeEnter.append("a")
+      nodeEnter.append("foreignObject")
         .attr('class', (d, b) => {
-            return getClassWithColor.bind(aa)(d.name)
+            return "fileIcon" + " " + getClassWithColor.bind(fileIconsJs)(d.name)
         })
-        .attr("width", 20)
-        .attr("height", 20)
-        .style("font-size", 15)
-        .style("transform-origin", "20px 20px")
+        .attr("width", 0)
+        .attr("height", 0)
 
       nodeEnter.append("text")
           .attr("x", function(d) {
@@ -489,12 +488,21 @@ function diagonal(d) {
       //     .style("fill", function(d) {
       //         return d._children ? "lightsteelblue" : "#fff";
       //     });
+
       node.select("rect.nodeCircle")
           .attr("width", rectNode.width)
           .attr("height", rectNode.height)
           .style("fill", function(d) {
-              return d._children ? "black" : folderColors[d.depth % folderColors.length];
+            if (!d.children) {
+                return "white"
+            }
+
+            return d._children ? "black" : folderColors[d.depth % folderColors.length];
           });
+
+      node.select("foreignObject.fileIcon")
+        .attr("width", rectNode.height)
+        .attr("height", rectNode.height)
 
       // Transition nodes to their new position.
       var nodeUpdate = node.transition()

@@ -220,23 +220,28 @@ function diagonal(d) {
           .style("fill", function(d) {
               return d._children ? "black" : "white";
           })
-          .style("stroke", "grey")
-          .style("stroke-width", 1);
+          .style("stroke", "lightgrey")
+          .style("stroke-width", 5);
 
       nodeEnter.append("foreignObject")
-        .attr('class', (d, b) => {
-            return "fileIcon" + " " + getClassWithColor.bind(fileIconsJs)(d.name)
+        .attr('class', (d) => {
+            let classValue = "fileIcon"
+
+            if (!d.children && !d._children) {
+                classValue += " " + getClassWithColor.bind(fileIconsJs)(d.name)
+            }
+
+            return classValue
         })
         .attr("width", 0)
         .attr("height", 0)
 
       const textX = d => d.children || d._children ? 10 : rectNode.height + 5;
+      const textY = 17;
 
       nodeEnter.append("text")
           .attr("x", textX)
-          .attr("y", function(d) {
-            return 15;
-            })
+          .attr("y", textY)
           .attr("dy", ".35em")
           .attr('class', 'nodeText')
           .attr("text-anchor", function(d) {
@@ -269,9 +274,7 @@ function diagonal(d) {
       // Update the text to reflect whether node has children or not.
       node.select('text')
           .attr("x", textX)
-          .attr("y", function(d) {
-              return 15;
-          })
+          .attr("y", textY)
           .attr("text-anchor", function(d) {
               return "start";
           })

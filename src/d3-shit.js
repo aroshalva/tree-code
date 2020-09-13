@@ -13,7 +13,7 @@ import 'file-icons-js/css/style.css'
 // ]
 
 const folderColors = [
-    "#B03A2E",
+    "#CB4335",
     "#A569BD",
     "#2874A6",
     "#D68910",

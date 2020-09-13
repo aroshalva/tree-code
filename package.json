@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "file-icons-js": "github:websemantics/file-icons-js",
     "file-system": "^2.2.2",
     "folder-reader": "^2.0.0",
     "folder-walker": "^3.2.0",

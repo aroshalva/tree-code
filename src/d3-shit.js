@@ -1,4 +1,15 @@
 /* eslint-disable */
+import aa, { getClassWithColor } from 'file-icons-js'
+import 'file-icons-js/css/style.css'
+
+
+const folderColors = [
+    "#FFB1B0",
+    "#FFDFBE",
+    "#B4F0A7",
+    "#A9D1F7",
+    "#CC99FF",
+]
 
 export const attachTree = (treeData) => {
 
@@ -24,10 +35,31 @@ export const attachTree = (treeData) => {
       .size([viewerHeight, viewerWidth]);
 
   // define a d3 diagonal projection for use by the node paths later on.
-  var diagonal = d3.svg.diagonal()
-      .projection(function(d) {
-          return [d.y, d.x];
-      });
+//   var diagonal = d3.svg.diagonal()
+//       .projection(function(d) {
+//           return [d.y, d.x];
+//       });
+var rectNode = { width : 120, height : 35 }
+
+function diagonal(d) {
+    var p0 = {
+        x : d.source.x + rectNode.height / 2,
+        y : (d.source.y + rectNode.width)
+    }, p3 = {
+        x : d.target.x + rectNode.height / 2,
+        y : d.target.y
+    }, m = (p0.y + p3.y) / 2, p = [ p0, {
+        x : p0.x,
+        y : m
+    }, {
+        x : p3.x,
+        y : m
+    }, p3 ];
+    p = p.map(function(d) {
+        return [ d.y, d.x ];
+    });
+    return 'M' + p[0] + 'C' + p[1] + ' ' + p[2] + ' ' + p[3];
+	}
 
   // A recursive helper function for performing some setup by walking through all nodes
 
@@ -67,30 +99,30 @@ export const attachTree = (treeData) => {
 
   // TODO: Pan function, can be better implemented.
 
-  function pan(domNode, direction) {
-      var speed = panSpeed;
-      if (panTimer) {
-          clearTimeout(panTimer);
-          translateCoords = d3.transform(svgGroup.attr("transform"));
-          if (direction == 'left' || direction == 'right') {
-              translateX = direction == 'left' ? translateCoords.translate[0] + speed : translateCoords.translate[0] - speed;
-              translateY = translateCoords.translate[1];
-          } else if (direction == 'up' || direction == 'down') {
-              translateX = translateCoords.translate[0];
-              translateY = direction == 'up' ? translateCoords.translate[1] + speed : translateCoords.translate[1] - speed;
-          }
-          scaleX = translateCoords.scale[0];
-          scaleY = translateCoords.scale[1];
-          scale = zoomListener.scale();
-          svgGroup.transition().attr("transform", "translate(" + translateX + "," + translateY + ")scale(" + scale + ")");
-          d3.select(domNode).select('g.node').attr("transform", "translate(" + translateX + "," + translateY + ")");
-          zoomListener.scale(zoomListener.scale());
-          zoomListener.translate([translateX, translateY]);
-          panTimer = setTimeout(function() {
-              pan(domNode, speed, direction);
-          }, 50);
-      }
-  }
+//   function pan(domNode, direction) {
+//       var speed = panSpeed;
+//       if (panTimer) {
+//           clearTimeout(panTimer);
+//           translateCoords = d3.transform(svgGroup.attr("transform"));
+//           if (direction == 'left' || direction == 'right') {
+//               translateX = direction == 'left' ? translateCoords.translate[0] + speed : translateCoords.translate[0] - speed;
+//               translateY = translateCoords.translate[1];
+//           } else if (direction == 'up' || direction == 'down') {
+//               translateX = translateCoords.translate[0];
+//               translateY = direction == 'up' ? translateCoords.translate[1] + speed : translateCoords.translate[1] - speed;
+//           }
+//           scaleX = translateCoords.scale[0];
+//           scaleY = translateCoords.scale[1];
+//           scale = zoomListener.scale();
+//           svgGroup.transition().attr("transform", "translate(" + translateX + "," + translateY + ")scale(" + scale + ")");
+//           d3.select(domNode).select('g.node').attr("transform", "translate(" + translateX + "," + translateY + ")");
+//           zoomListener.scale(zoomListener.scale());
+//           zoomListener.translate([translateX, translateY]);
+//           panTimer = setTimeout(function() {
+//               pan(domNode, speed, direction);
+//           }, 50);
+//       }
+//   }
 
   // Define the zoom function for the zoomable tree
 
@@ -100,49 +132,49 @@ export const attachTree = (treeData) => {
 
 
   // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
-  var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+  var zoomListener = d3.behavior.zoom().scaleExtent([0.01, 3]).on("zoom", zoom);
 
-  function initiateDrag(d, domNode) {
-      draggingNode = d;
-      d3.select(domNode).select('.ghostCircle').attr('pointer-events', 'none');
-      d3.selectAll('.ghostCircle').attr('class', 'ghostCircle show');
-      d3.select(domNode).attr('class', 'node activeDrag');
+//   function initiateDrag(d, domNode) {
+//       draggingNode = d;
+//       d3.select(domNode).select('.ghostCircle').attr('pointer-events', 'none');
+//       d3.selectAll('.ghostCircle').attr('class', 'ghostCircle show');
+//       d3.select(domNode).attr('class', 'node activeDrag');
 
-      svgGroup.selectAll("g.node").sort(function(a, b) { // select the parent and sort the path's
-          if (a.id != draggingNode.id) return 1; // a is not the hovered element, send "a" to the back
-          else return -1; // a is the hovered element, bring "a" to the front
-      });
-      // if nodes has children, remove the links and nodes
-      if (nodes.length > 1) {
-          // remove link paths
-          links = tree.links(nodes);
-          nodePaths = svgGroup.selectAll("path.link")
-              .data(links, function(d) {
-                  return d.target.id;
-              }).remove();
-          // remove child nodes
-          nodesExit = svgGroup.selectAll("g.node")
-              .data(nodes, function(d) {
-                  return d.id;
-              }).filter(function(d, i) {
-                  if (d.id == draggingNode.id) {
-                      return false;
-                  }
-                  return true;
-              }).remove();
-      }
+//       svgGroup.selectAll("g.node").sort(function(a, b) { // select the parent and sort the path's
+//           if (a.id != draggingNode.id) return 1; // a is not the hovered element, send "a" to the back
+//           else return -1; // a is the hovered element, bring "a" to the front
+//       });
+//       // if nodes has children, remove the links and nodes
+//       if (nodes.length > 1) {
+//           // remove link paths
+//           links = tree.links(nodes);
+//           nodePaths = svgGroup.selectAll("path.link")
+//               .data(links, function(d) {
+//                   return d.target.id;
+//               }).remove();
+//           // remove child nodes
+//           nodesExit = svgGroup.selectAll("g.node")
+//               .data(nodes, function(d) {
+//                   return d.id;
+//               }).filter(function(d, i) {
+//                   if (d.id == draggingNode.id) {
+//                       return false;
+//                   }
+//                   return true;
+//               }).remove();
+//       }
 
-      // remove parent link
-      parentLink = tree.links(tree.nodes(draggingNode.parent));
-      svgGroup.selectAll('path.link').filter(function(d, i) {
-          if (d.target.id == draggingNode.id) {
-              return true;
-          }
-          return false;
-      }).remove();
+//       // remove parent link
+//       parentLink = tree.links(tree.nodes(draggingNode.parent));
+//       svgGroup.selectAll('path.link').filter(function(d, i) {
+//           if (d.target.id == draggingNode.id) {
+//               return true;
+//           }
+//           return false;
+//       }).remove();
 
-      dragStarted = null;
-  }
+//       dragStarted = null;
+//   }
 
   // define the baseSvg, attaching a class for styling and the zoomListener
   var baseSvg = d3.select("#tree-container").append("svg")
@@ -246,58 +278,58 @@ export const attachTree = (treeData) => {
 
   // Helper functions for collapsing and expanding nodes.
 
-  function collapse(d) {
-      if (d.children) {
-          d._children = d.children;
-          d._children.forEach(collapse);
-          d.children = null;
-      }
-  }
+//   function collapse(d) {
+//       if (d.children) {
+//           d._children = d.children;
+//           d._children.forEach(collapse);
+//           d.children = null;
+//       }
+//   }
 
-  function expand(d) {
-      if (d._children) {
-          d.children = d._children;
-          d.children.forEach(expand);
-          d._children = null;
-      }
-  }
+//   function expand(d) {
+//       if (d._children) {
+//           d.children = d._children;
+//           d.children.forEach(expand);
+//           d._children = null;
+//       }
+//   }
 
-  var overCircle = function(d) {
-      selectedNode = d;
-      updateTempConnector();
-  };
-  var outCircle = function(d) {
-      selectedNode = null;
-      updateTempConnector();
-  };
+//   var overCircle = function(d) {
+//       selectedNode = d;
+//       updateTempConnector();
+//   };
+//   var outCircle = function(d) {
+//       selectedNode = null;
+//       updateTempConnector();
+//   };
 
   // Function to update the temporary connector indicating dragging affiliation
-  var updateTempConnector = function() {
-      var data = [];
-      if (draggingNode !== null && selectedNode !== null) {
-          // have to flip the source coordinates since we did this for the existing connectors on the original tree
-          data = [{
-              source: {
-                  x: selectedNode.y0,
-                  y: selectedNode.x0
-              },
-              target: {
-                  x: draggingNode.y0,
-                  y: draggingNode.x0
-              }
-          }];
-      }
-      var link = svgGroup.selectAll(".templink").data(data);
+//   var updateTempConnector = function() {
+//       var data = [];
+//       if (draggingNode !== null && selectedNode !== null) {
+//           // have to flip the source coordinates since we did this for the existing connectors on the original tree
+//           data = [{
+//               source: {
+//                   x: selectedNode.y0,
+//                   y: selectedNode.x0
+//               },
+//               target: {
+//                   x: draggingNode.y0,
+//                   y: draggingNode.x0
+//               }
+//           }];
+//       }
+//       var link = svgGroup.selectAll(".templink").data(data);
 
-      link.enter().append("path")
-          .attr("class", "templink")
-          .attr("d", d3.svg.diagonal())
-          .attr('pointer-events', 'none');
+//       link.enter().append("path")
+//           .attr("class", "templink")
+//           .attr("d", d3.svg.diagonal())
+//           .attr('pointer-events', 'none');
 
-      link.attr("d", d3.svg.diagonal());
+//       link.attr("d", d3.svg.diagonal());
 
-      link.exit().remove();
-  };
+//       link.exit().remove();
+//   };
 
   // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
 
@@ -353,7 +385,7 @@ export const attachTree = (treeData) => {
           }
       };
       childCount(0, root);
-      var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line
+      var newHeight = d3.max(levelWidth) * 120; // 25 pixels per line
       tree = tree.size([newHeight, viewerWidth]);
 
       // Compute the new tree layout.
@@ -362,10 +394,10 @@ export const attachTree = (treeData) => {
 
       // Set widths between levels based on maxLabelLength.
       nodes.forEach(function(d) {
-          d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
+        //   d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
           // alternatively to keep a fixed scale one can set a fixed depth per level
           // Normalize for fixed-depth by commenting out below line
-          // d.y = (d.depth * 500); //500px per level.
+          d.y = (d.depth * 500); //500px per level.
       });
 
       // Update the nodes…
@@ -383,58 +415,85 @@ export const attachTree = (treeData) => {
           })
           .on('click', click);
 
-      nodeEnter.append("circle")
+      // nodeEnter.append("circle")
+      nodeEnter.append("rect")
           .attr('class', 'nodeCircle')
-          .attr("r", 0)
+          // .attr("r", 0)
+          .attr("width", 0)
+          .attr("height", 0)
           .style("fill", function(d) {
-              return d._children ? "lightsteelblue" : "#fff";
+              return d._children ? "black" : "white";
           });
+
+      nodeEnter.append("a")
+        .attr('class', (d, b) => {
+            return getClassWithColor.bind(aa)(d.name)
+        })
+        .attr("width", 20)
+        .attr("height", 20)
+        .style("font-size", 15)
+        .style("transform-origin", "20px 20px")
 
       nodeEnter.append("text")
           .attr("x", function(d) {
-              return d.children || d._children ? -10 : 10;
+              return d.children || d._children ? 10 : 10;
           })
+          .attr("y", function(d) {
+            return 15;
+            })
           .attr("dy", ".35em")
           .attr('class', 'nodeText')
           .attr("text-anchor", function(d) {
-              return d.children || d._children ? "end" : "start";
+              return d.children || d._children ? "start" : "start";
           })
           .text(function(d) {
               return d.name;
           })
-          .style("fill-opacity", 0);
+          .style("fill-opacity", 0)
+          .style("font-size", 15)
+          .style("font-weight", "bold")
+          .style("fill", "white");
 
-      // phantom node to give us mouseover in a radius around it
-      nodeEnter.append("circle")
-          .attr('class', 'ghostCircle')
-          .attr("r", 30)
-          .attr("opacity", 0.2) // change this to zero to hide the target area
-      .style("fill", "red")
-          .attr('pointer-events', 'mouseover')
-          .on("mouseover", function(node) {
-              overCircle(node);
-          })
-          .on("mouseout", function(node) {
-              outCircle(node);
-          });
+      // // phantom node to give us mouseover in a radius around it
+      // nodeEnter.append("circle")
+      //     .attr('class', 'ghostCircle')
+      //     .attr("r", 30)
+      //     .attr("opacity", 0.2) // change this to zero to hide the target area
+      // .style("fill", "red")
+      //     .attr('pointer-events', 'mouseover')
+      //     .on("mouseover", function(node) {
+      //         overCircle(node);
+      //     })
+      //     .on("mouseout", function(node) {
+      //         outCircle(node);
+      //     });
 
       // Update the text to reflect whether node has children or not.
       node.select('text')
           .attr("x", function(d) {
-              return d.children || d._children ? -10 : 10;
+              return d.children || d._children ? 10 : 10;
+          })
+          .attr("y", function(d) {
+              return 15;
           })
           .attr("text-anchor", function(d) {
-              return d.children || d._children ? "end" : "start";
+              return d.children || d._children ? "start" : "start";
           })
           .text(function(d) {
               return d.name;
           });
 
       // Change the circle fill depending on whether it has children and is collapsed
-      node.select("circle.nodeCircle")
-          .attr("r", 4.5)
+      // node.select("circle.nodeCircle")
+      //     .attr("r", 4.5)
+      //     .style("fill", function(d) {
+      //         return d._children ? "lightsteelblue" : "#fff";
+      //     });
+      node.select("rect.nodeCircle")
+          .attr("width", rectNode.width)
+          .attr("height", rectNode.height)
           .style("fill", function(d) {
-              return d._children ? "lightsteelblue" : "#fff";
+              return d._children ? "black" : folderColors[d.depth % folderColors.length];
           });
 
       // Transition nodes to their new position.
@@ -456,8 +515,11 @@ export const attachTree = (treeData) => {
           })
           .remove();
 
-      nodeExit.select("circle")
-          .attr("r", 0);
+      // nodeExit.select("circle")
+      //     .attr("r", 0);
+      nodeExit.select("rect")
+          .attr("width", 0)
+          .attr("height", 0);
 
       nodeExit.select("text")
           .style("fill-opacity", 0);
@@ -476,6 +538,7 @@ export const attachTree = (treeData) => {
                   x: source.x0,
                   y: source.y0
               };
+
               return diagonal({
                   source: o,
                   target: o

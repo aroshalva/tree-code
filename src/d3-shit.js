@@ -14,11 +14,12 @@ import 'file-icons-js/css/style.css'
 // ]
 
 const folderColors = [
-    "#CB4335",
-    "#A569BD",
-    "#2874A6",
-    "#D68910",
-    "#52BE80",
+    "none",
+    // "#CB4335",
+    // "#A569BD",
+    // "#2874A6",
+    // "#D68910",
+    // "#52BE80",
 ]
 
 export const attachTree = ({ treeData, onNodeClick, viewerWidth, viewerHeight }) => {
@@ -45,29 +46,29 @@ export const attachTree = ({ treeData, onNodeClick, viewerWidth, viewerHeight })
 //       .projection(function(d) {
 //           return [d.y, d.x];
 //       });
-var rectNode = { width : 250, height : 35 }
+var rectNode = { width : 250, height : 45 }
 
 var nodeRoundCorners = 5
 
 function diagonal(d) {
-    var p0 = {
-        x : d.source.x + rectNode.height / 2,
-        y : (d.source.y + rectNode.width)
-    }, p3 = {
-        x : d.target.x + rectNode.height / 2,
-        y : d.target.y
-    }, m = (p0.y + p3.y) / 2, p = [ p0, {
-        x : p0.x,
-        y : m
-    }, {
-        x : p3.x,
-        y : m
-    }, p3 ];
-    p = p.map(function(d) {
-        return [ d.y, d.x ];
-    });
-    return 'M' + p[0] + 'C' + p[1] + ' ' + p[2] + ' ' + p[3];
-	}
+  var p0 = {
+    x : d.source.x + rectNode.height / 2,
+    y : (d.source.y + rectNode.width)
+  }, p3 = {
+    x : d.target.x + rectNode.height / 2,
+    y : d.target.y
+  }, m = (p0.y + p3.y) / 2, p = [ p0, {
+    x : p0.x,
+    y : m
+  }, {
+    x : p3.x,
+    y : m
+  }, p3 ];
+  p = p.map(function(d) {
+      return [ d.y, d.x ];
+  });
+  return 'M' + p[0] + 'C' + p[1] + ' ' + p[2] + ' ' + p[3];
+  }
 
   // A recursive helper function for performing some setup by walking through all nodes
 
@@ -222,8 +223,8 @@ function diagonal(d) {
           .style("fill", function(d) {
               return d._children ? "black" : "white";
           })
-          .style("stroke", "lightgrey")
-          .style("stroke-width", 5);
+        //   .style("stroke", "lightgrey")
+        //   .style("stroke-width", 5);
 
       nodeEnter.append("foreignObject")
         .attr('class', (d) => {
@@ -253,10 +254,10 @@ function diagonal(d) {
               return d.name;
           })
           .style("fill-opacity", 0)
-          .style("font-size", 25)
+          .style("font-size", 40)
           .style("font-weight", "bold")
           .style("fill", function(d) {
-            return d.children || d._children ? "white" : "black";
+            return d.children || d._children ? "white" : "white";
         });
 
       // // phantom node to give us mouseover in a radius around it
@@ -299,9 +300,9 @@ function diagonal(d) {
                 return "black"
             }
 
-            if (!d.children) {
-                return "white"
-            }
+            // if (!d.children) {
+            //     return "white"
+            // }
 
             return d._children ? "black" : folderColors[d.depth % folderColors.length];
           });
@@ -394,7 +395,23 @@ function diagonal(d) {
   root.x0 = viewerHeight / 2;
   root.y0 = 0;
 
+  const duduna = (allData) => {
+    const bubuna = (listData) => listData.forEach(currentElem => duduna(currentElem))
+
+    if (allData.children) {
+      bubuna(allData.children)
+
+      toggleChildren(allData)
+    }
+  }
+
+
   // Layout the tree initially and center on the root node.
   update(root);
-  centerNode(root);
+
+  // to collapse all from start
+//   duduna(treeData)
+//   update(root);
+
+centerNode(root);
 }

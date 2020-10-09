@@ -76,7 +76,6 @@ class App extends React.Component {
     }
 
     fields.forEach((field, fieldIndex) => {
-      console.log(1, fieldIndex)
       var tags = field.split(splitBy);
       root = tree;
       tags.forEach(currentTag => addNodes(currentTag, fieldIndex))

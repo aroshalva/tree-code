@@ -3,7 +3,7 @@
 }
 
 .overlay{
-    background-color:#EEE;
+    background-color:#2c2d31;
 }
 
 .node circle {
@@ -19,7 +19,7 @@
 
 .link {
   fill: none;
-  stroke: #ccc;
+  stroke: #ccc !important;
   stroke-width: 1.5px;
 }
 
@@ -38,7 +38,7 @@
 }
 
 foreignObject.fileIcon::before {
-  font-size: 35px;
+  font-size: 45px;
 }
 
 /* start of something */

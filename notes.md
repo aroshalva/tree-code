@@ -17,10 +17,15 @@ most used buttons on node
 
 copy file path
 
+add some usefull keyboard shortcuts, do zoom with it. and navigate with arrow keys.
+
 somehow emphasize folder tree
 
 isolate folder tree
 
 move around node to arrange as u like.
 
+git commit tree, simple
+
+regex sugar in words.
 

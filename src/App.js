@@ -8,6 +8,7 @@ import { attachTree } from "./d3-shit"
 import { dummyData } from "./dummy-data"
 import { attachId } from "./constants"
 import path from "path"
+import LandingPage from "./LandingPage"
 
 const sortAsFoldersOnTop = (data) => {
   const sortArr = (arr) => {
@@ -154,6 +155,13 @@ class App extends React.Component {
   render() {
     return (
       <div class="app">
+        <LandingPage />
+
+        ეს Web ვერსიაა, არ გჭირდება, პროსტა მაქ.
+        <br />
+        თუ გახსნი node_modules არ გახსნა თორე გაჩედავს ტაბი, და არც ძაან ბევრი ფაილი არ გახნა max 1500
+        <br />
+
         {!this.dummyTreeShow &&
           <input type="file" id="flup" onChange={this.handleDirectoryChange} webkitdirectory="" mozdirectory="" msdirectory="" odirectory="" directory="" multiple />
         }
